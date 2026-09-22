@@ -3,113 +3,344 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy – Number Inbox</title>
+  <title>Privacy Policy – NumberInbox</title>
+  <meta name="description" content="NumberInbox Privacy Policy. Email, reimagined with your number. We don't sell your data. You are not the product.">
   <style>
+    /* Brand tokens from designer sheet */
     :root {
-      --primary: #2196F3;
-      --bg: #F7F4EE;
-      --text: #1A1A1A;
-      --text-secondary: #6B7280;
+      --emerald: #10B981;
+      --cyan: #06B6D4;
+      --blue: #2563EB;
+      --navy: #0F172A;
+      --navy-2: #1E293B;
+      --cool-gray: #E5E7EB;
+      --ice: #F5F7EB;
+      --bg: #F6F9FC;
+      --text: #0F172A;
+      --muted: #5B6472;
+      --card: #FFFFFF;
+      --radius: 20px;
+      --gradient: linear-gradient(135deg, #10B981 0%, #06B6D4 55%, #2563EB 100%);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: Inter, Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
     }
-    header {
-      background: var(--primary);
-      color: white;
-      padding: 2rem 1.5rem;
-      text-align: center;
-    }
-    header h1 { font-size: 1.5rem; font-weight: 600; }
-    main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
-    }
-    h2 {
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin: 2rem 0 0.75rem;
-      color: var(--text);
-    }
-    p, li {
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      margin-bottom: 0.75rem;
-    }
-    ul { padding-left: 1.25rem; margin-bottom: 0.75rem; }
-    li { margin-bottom: 0.4rem; }
-    strong { color: var(--text); }
-    .tagline { font-style: italic; opacity: 0.9; margin-bottom: 0.25rem; }
-    .updated { font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-top: 0.5rem; }
-    a { color: var(--primary); text-decoration: none; }
+    a { color: #0284C7; text-decoration: none; }
     a:hover { text-decoration: underline; }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.85);
+      border-bottom: 1px solid var(--cool-gray);
+    }
+    .nav-inner {
+      max-width: 860px; margin: 0 auto; padding: 0.7rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 0.65rem; }
+    .wordmark { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; }
+    .wordmark .n { color: var(--navy); }
+    .wordmark .i {
+      background: var(--gradient);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .nav-date {
+      font-size: 0.78rem; color: var(--muted);
+      border: 1px solid var(--cool-gray); background: #fff;
+      padding: 0.3rem 0.7rem; border-radius: 999px;
+    }
+
+    /* Hero – mirrors Splash Screen: deep navy + emerald/cyan glow */
+    .hero {
+      background: radial-gradient(800px 400px at 20% 0%, rgba(16,185,129,0.35), transparent 60%),
+                  radial-gradient(800px 400px at 90% 20%, rgba(6,182,212,0.35), transparent 60%),
+                  linear-gradient(180deg, #0B1226 0%, var(--navy) 100%);
+      color: #fff; text-align: center;
+      padding: 3.5rem 1.5rem 4.5rem;
+      position: relative; overflow: hidden;
+    }
+    .app-mark {
+      width: 84px; height: 84px; margin: 0 auto 1.2rem;
+      border-radius: 24px; background: var(--gradient);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.6rem; font-weight: 800; color: #fff;
+      box-shadow: 0 12px 40px rgba(6,182,212,0.45), inset 0 1px 0 rgba(255,255,255,0.4);
+      position: relative;
+    }
+    .app-mark::after {
+      content: ""; position: absolute; inset: 0; border-radius: 24px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25);
+    }
+    .app-mark span { transform: translateY(-2px); }
+    .hero h1 { font-size: 2rem; letter-spacing: -0.03em; margin-bottom: 0.4rem; }
+    .hero .tagline { font-size: 1.05rem; opacity: 0.95; font-weight: 500; }
+    .hero .sub { font-size: 0.95rem; opacity: 0.75; margin-top: 0.4rem; }
+    .badges { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1.4rem; }
+    .badge {
+      font-size: 0.78rem; font-weight: 600;
+      padding: 0.35rem 0.8rem; border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #E2F4FF;
+    }
+    .badge.dot::before {
+      content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+      background: #34D399; margin-right: 0.4rem; vertical-align: 1px;
+    }
+
+    /* Layout */
+    main { max-width: 860px; margin: -2.5rem auto 0; padding: 0 1.5rem 4rem; position: relative; }
+
+    .trust {
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--cool-gray);
+      box-shadow: 0 10px 30px rgba(15,23,42,0.08);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      overflow: hidden; margin-bottom: 1.25rem;
+    }
+    .trust div { padding: 1.1rem 0.8rem; text-align: center; border-right: 1px solid #EEF2F7; }
+    .trust div:last-child { border-right: 0; }
+    .trust svg { width: 24px; height: 24px; stroke: var(--emerald); margin-bottom: 0.4rem; }
+    .trust strong { display: block; font-size: 0.82rem; }
+    .trust span { font-size: 0.75rem; color: var(--muted); line-height: 1.4; display: block; }
+
+    .card {
+      background: var(--card); border: 1px solid var(--cool-gray);
+      border-radius: var(--radius); padding: 2.2rem 2.2rem 1.5rem;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+    }
+    .promise {
+      background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(6,182,212,0.12));
+      border: 1px solid rgba(16,185,129,0.3);
+      border-radius: 14px; padding: 1rem 1.2rem; margin-bottom: 1.5rem;
+      font-weight: 600; font-size: 0.95rem;
+    }
+    h2 { font-size: 1.15rem; letter-spacing: -0.01em; margin: 2rem 0 0.6rem; padding-top: 0.5rem; }
+    h2:first-of-type { margin-top: 0; }
+    h2 .num {
+      display: inline-flex; width: 26px; height: 26px; border-radius: 8px;
+      background: var(--gradient); color: #fff; font-size: 0.8rem;
+      align-items: center; justify-content: center; margin-right: 0.5rem; vertical-align: 2px;
+    }
+    p, li { font-size: 0.95rem; color: var(--muted); margin-bottom: 0.7rem; }
+    p strong, li strong { color: var(--text); }
+    ul { padding-left: 1.2rem; margin-bottom: 0.7rem; }
+    li { margin-bottom: 0.35rem; }
+    li::marker { color: var(--emerald); }
+
+    .toc {
+      display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 1rem 0 0.5rem;
+    }
+    .toc a {
+      font-size: 0.78rem; font-weight: 600; color: var(--navy-2);
+      background: #F1F5F9; border: 1px solid var(--cool-gray);
+      padding: 0.3rem 0.7rem; border-radius: 999px;
+    }
+    .toc a:hover { background: #E0F2FE; border-color: var(--cyan); text-decoration: none; }
+
+    .perm-grid { display: grid; grid-template-columns: 1fr; gap: 0.7rem; margin: 0.8rem 0; }
+    .perm {
+      border: 1px solid var(--cool-gray); border-radius: 14px; padding: 0.9rem 1.1rem;
+      background: #FBFDFE;
+    }
+    .perm strong { font-size: 0.9rem; }
+    .perm p { margin: 0.25rem 0 0; font-size: 0.88rem; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 0.8rem 0; }
+    th, td { text-align: left; padding: 0.6rem 0.7rem; border-bottom: 1px solid #EEF2F7; color: var(--muted); }
+    th { color: var(--text); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    td strong { color: var(--text); }
+
+    .contact-box {
+      margin-top: 1.8rem; border-radius: 14px; padding: 1.2rem 1.3rem;
+      background: var(--navy); color: #D9E8F5;
+    }
+    .contact-box strong { color: #fff; }
+    .contact-box a { color: #5EEAD4; font-weight: 600; }
+
+    footer {
+      background: var(--navy); color: #94A3B8;
+      text-align: center; padding: 2.2rem 1.5rem 2.5rem; font-size: 0.82rem;
+    }
+    footer .fmark {
+      width: 44px; height: 44px; border-radius: 13px; background: var(--gradient);
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 800; font-size: 1.4rem; margin-bottom: 0.7rem;
+    }
+    footer .fw { color: #fff; font-weight: 800; margin-bottom: 0.2rem; }
+    footer .fw span:last-child {
+      background: linear-gradient(90deg, #22D3EE, #34D399);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    @media (max-width: 640px) {
+      .trust { grid-template-columns: 1fr 1fr; }
+      .trust div:nth-child(2) { border-right: 0; }
+      .trust div:nth-child(1), .trust div:nth-child(2) { border-bottom: 1px solid #EEF2F7; }
+      .card { padding: 1.5rem 1.25rem; }
+      .hero h1 { font-size: 1.6rem; }
+      table { font-size: 0.82rem; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Number Inbox</h1>
-    <p class="tagline">Your number is your inbox</p>
-    <p class="updated">Last updated: September 21, 2026</p>
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#10B981,#06B6D4 60%,#2563EB);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:1.1rem;">@</div>
+        <div class="wordmark"><span class="n">Number</span><span class="i">Inbox</span></div>
+      </div>
+      <div class="nav-date">Effective: September 22, 2026</div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="app-mark"><span>@</span></div>
+    <h1>Privacy Policy</h1>
+    <p class="tagline">Email, reimagined with your number.</p>
+    <p class="sub">Your number. Your inbox. — We don't sell your data. You are not the product.</p>
+    <div class="badges">
+      <span class="badge dot">No ads · No data sale</span>
+      <span class="badge">App-only policy</span>
+      <span class="badge">GDPR-aware</span>
+      <span class="badge">Last updated Sept 22, 2026</span>
+    </div>
   </header>
+
   <main>
-    <h2>Privacy Policy</h2>
-    <p>This privacy policy governs the user data processing executed by NumberInbox.</p>
-    <p><strong>NumberInbox's business model is not based on your personal data. We do not sell your data, and you are not the product.</strong></p>
+    <div class="trust">
+      <div>
+        <svg fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+        <strong>Use your number</strong><span>No new address needed</span>
+      </div>
+      <div>
+        <svg fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <strong>Secure &amp; private</strong><span>Your number, your control</span>
+      </div>
+      <div>
+        <svg fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+        <strong>Fast &amp; simple</strong><span>Get started in seconds</span>
+      </div>
+      <div>
+        <svg fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <strong>Global</strong><span>Works anywhere, worldwide</span>
+      </div>
+    </div>
 
-    <h2>Definitions</h2>
-    <ul>
-      <li><strong>Content</strong> – Any data available through the NumberInbox service, regardless of nature (information, image, video, audio, file, text, software, or any other element).</li>
-      <li><strong>Personal data</strong> – Any information relating to an identified or identifiable natural person.</li>
-      <li><strong>Service</strong> – NumberInbox, an email service where your phone number is your identity. Emails sent to +{country code}{phone number}@numberinbox.com are delivered to your inbox.</li>
-      <li><strong>User</strong> – You as an individual, whether acting on your own account or on behalf of an organization.</li>
-      <li><strong>User Content</strong> – Content directly or indirectly created by a User and uploaded to or broadcast through the Service.</li>
-    </ul>
+    <div class="card">
+      <div class="promise">NumberInbox's business model is not based on your personal data. We do not sell, rent, or trade your data, show ads, or profile you.</div>
 
-    <h2>Scope</h2>
-    <p>This privacy policy is limited to the NumberInbox application.</p>
+      <div class="toc">
+        <a href="#who">1 · Who we are</a>
+        <a href="#scope">2 · Scope</a>
+        <a href="#collect">3 · What we collect</a>
+        <a href="#never">4 · What we never do</a>
+        <a href="#emails">5 · Your emails</a>
+        <a href="#push">6 · Notifications</a>
+        <a href="#permissions">7 · Permissions</a>
+        <a href="#basis">8 · Legal basis</a>
+        <a href="#retention">9 · Retention</a>
+        <a href="#sharing">10 · Sharing</a>
+        <a href="#rights">11 · Your rights</a>
+        <a href="#children">12 · Children</a>
+        <a href="#security">13 · Security</a>
+        <a href="#changes">14 · Changes</a>
+        <a href="#contact">15 · Contact</a>
+      </div>
 
-    <h2>Email Server Disclaimer</h2>
-    <p>Users need to be aware that the email server and its owner may have a different privacy policy. NumberInbox being usable with any email server, we cannot assume the terms of the email server owner's privacy policy. Users are responsible for consulting and validating the privacy policy of their email server.</p>
-    <p>NumberInbox cannot be held accountable for the actions of arbitrary email server owners that Users have been setting up with the NumberInbox application.</p>
+      <h2 id="who"><span class="num">1</span>Who we are &amp; definitions</h2>
+      <p><strong>Controller:</strong> NumberInbox — <a href="mailto:privacy@numberinbox.com">privacy@numberinbox.com</a>.</p>
+      <ul>
+        <li><strong>Service</strong> – NumberInbox, an email client where your phone number is your identity. Emails sent to +{country code}{phone number}@numberinbox.com are delivered to your inbox.</li>
+        <li><strong>Personal data</strong> – any information relating to an identified or identifiable person.</li>
+        <li><strong>User Content</strong> – content you create, upload, or send through the Service.</li>
+      </ul>
 
-    <h2>Acceptance</h2>
-    <p>By accessing and/or activating the functionalities of the Service, Users signify their understanding as well as their irrevocable and complete acceptance of the Privacy Policy applicable at the time of such Service use.</p>
-    <p>This Privacy Policy may be amended or changed at any time without prior notice.</p>
+      <h2 id="scope"><span class="num">2</span>Scope</h2>
+      <p>This policy covers the <strong>NumberInbox app</strong> and this static privacy site only. It does <strong>not</strong> cover your email provider — see §5.</p>
 
-    <h2>Data Processing Operations</h2>
-    <p>NumberInbox does not collect any personal data.</p>
-    <p>If supported by the email server, the fact that emails are received might transit through third party infrastructure (Firebase Cloud Messaging). In the process, no personal data is being exposed, and the NumberInbox application needs to contact the mail server directly in order to gather the notification information.</p>
+      <h2 id="collect"><span class="num">3</span>What we collect</h2>
+      <p>We split this clearly to avoid confusion:</p>
+      <table>
+        <tr><th>Source</th><th>Data</th><th>Purpose</th></tr>
+        <tr><td><strong>App use</strong></td><td>No account, no analytics SDK, no personal data collected by us</td><td>Provide the client locally on your device</td></tr>
+        <tr><td><strong>Support contact</strong></td><td>Name, email, message — only if you email us</td><td>Reply to your request only</td></tr>
+        <tr><td><strong>This website</strong></td><td>No cookies, no analytics, no tracking currently</td><td>Display this policy statically</td></tr>
+      </table>
+      <p>If we ever add optional website statistics, they will be <strong>consent-based only</strong>, and you can withdraw consent at any time via your browser settings or by contacting us.</p>
 
-    <h2>Application Permissions</h2>
-    <p>In order to work smoothly on your device the NumberInbox application needs the following authorization:</p>
-    <ul>
-      <li><strong>Files, documents, and audio files</strong> – Used to access files on your device and attach them to emails. Once selected, files are uploaded to the remote email server.</li>
-      <li><strong>Photos and videos</strong> – Used to access photos and videos and attach them to emails. Once selected, files are uploaded to the remote email server.</li>
-      <li><strong>Contacts</strong> – Used for email address auto-completion against your local address book. Local address books are never uploaded to third parties. Only once an email is sent to a local contact does the email server become aware of the email address and display name of the contact.</li>
-    </ul>
-    <p>These permissions are only intended to improve the NumberInbox user experience. NumberInbox is still usable with a reduced functional scope if the user denies permissions.</p>
+      <h2 id="never"><span class="num">4</span>What we never do</h2>
+      <ul>
+        <li>No sale, rental, or trade of personal data. No ads. No cross-app profiling.</li>
+        <li>No access to your mailbox content — your credentials stay on your device and connect directly to your provider.</li>
+        <li>No collection of contacts, photos, or files except when you explicitly choose a file to attach.</li>
+      </ul>
 
-    <h2>Our Guiding Principles for Privacy</h2>
-    <p>Our personal data collection and processing comply with the GDPR principles and the following guidelines:</p>
-    <ul>
-      <li>Gathering and processing of personal data is never an end in itself. It aims at achieving a legitimate and licit purpose, and is strictly proportionate and necessary to the achievement of said purpose.</li>
-      <li>We never keep collected data any longer than strictly necessary to achieve the purpose it was collected for.</li>
-      <li>When entrusting third-party partner companies with the task of processing user personal data, we ensure such companies comply with a data privacy protection level at least equal to the level of protection provided to EU citizens.</li>
-    </ul>
-    <p>In order for us to provide you with the best possible experience when using our Services, we may collect and process certain information. Depending on your use of the Services, this may include:</p>
-    <ul>
-      <li><strong>Your contact information</strong> – When you request help, send us questions or comments, or report a problem, we will collect your name, email address, message, etc. We will only use this information to respond to your requests.</li>
-      <li><strong>Your statistical/cookie/behavioral data</strong> – When you visit our site or use the Services, we may collect the URL of the website from which you visited us, the parts of our site you visit, the date and duration of your visit, your anonymous IP address, device information (device type, operating system, screen resolution, language, country you are in, type of web browser you used during your visit, etc.), and other information about your computer.</li>
-    </ul>
-    <p>Most of this statistical data is not necessary for providing you with the service and we will only collect it after having obtained your consent. You can withdraw your consent (or grant it again) at any time in your personal settings.</p>
+      <h2 id="emails"><span class="num">5</span>Your emails stay with your provider</h2>
+      <p>NumberInbox is a client usable with any email server. Your messages, credentials, and mailbox are stored by <strong>the email server owner you configure</strong>, under their privacy policy — not ours.</p>
+      <p>Please review your provider's policy. We cannot be held responsible for the actions of email server owners you choose to use.</p>
 
-    <h2>Contact</h2>
-    <p>If you have any questions about this Privacy Policy, please contact us at <a href="mailto:privacy@numberinbox.com">privacy@numberinbox.com</a>.</p>
+      <h2 id="push"><span class="num">6</span>Push notifications</h2>
+      <p>If your provider supports push, new-mail signals may transit via <strong>Firebase Cloud Messaging (Google)</strong>. No email content or personal data is sent to us in this process — FCM carries a minimal wake-up signal, and the app then fetches the actual message <strong>directly from your mail server</strong>.</p>
+
+      <h2 id="permissions"><span class="num">7</span>App permissions</h2>
+      <p>All permissions are optional. Denying them only reduces functionality:</p>
+      <div class="perm-grid">
+        <div class="perm"><strong>Files, documents &amp; audio</strong><p>To attach a file you pick to an email. Only chosen files are uploaded — to your mail server, never to us.</p></div>
+        <div class="perm"><strong>Photos &amp; videos</strong><p>To attach a photo/video you pick. Same as above — your choice, your server.</p></div>
+        <div class="perm"><strong>Contacts</strong><p>For on-device address auto-complete. Your address book never leaves your device, except the single address you explicitly send an email to (which your mail server then sees).</p></div>
+      </div>
+
+      <h2 id="basis"><span class="num">8</span>Legal basis (GDPR Art. 6)</h2>
+      <ul>
+        <li><strong>Support replies:</strong> consent / legitimate interest in answering you.</li>
+        <li><strong>App functionality:</strong> performance of the service you requested; permissions based on your consent.</li>
+        <li><strong>Optional statistics (site only, if ever enabled):</strong> consent.</li>
+      </ul>
+
+      <h2 id="retention"><span class="num">9</span>Retention</h2>
+      <p>We store essentially nothing. Support emails are kept only as long as needed to resolve your request, then deleted on request. Anything stored by your mail provider or FCM is governed by their retention schedules.</p>
+
+      <h2 id="sharing"><span class="num">10</span>Sharing &amp; third parties</h2>
+      <ul>
+        <li><strong>Your chosen email provider</strong> — receives what the email protocol requires to deliver mail.</li>
+        <li><strong>Google (Firebase Cloud Messaging)</strong> — as a processor for push delivery, where applicable.</li>
+        <li>We do not share data with advertisers, brokers, or analytics vendors. Disclosure only if legally required.</li>
+      </ul>
+      <p>No international transfer is performed by us. Transfers (if any) happen between your device, your provider, and Google under their terms.</p>
+
+      <h2 id="rights"><span class="num">11</span>Your rights</h2>
+      <p>Under GDPR (and applicable local laws) you have the rights of access, rectification, erasure, restriction, portability, objection, and withdrawal of consent.</p>
+      <p>To exercise them, email <a href="mailto:privacy@numberinbox.com">privacy@numberinbox.com</a>. We reply within 30 days. You also have the right to lodge a complaint with your supervisory authority. Since the app holds no account data about you, most requests will concern support correspondence only — mailbox data must be requested from your provider.</p>
+
+      <h2 id="children"><span class="num">12</span>Children</h2>
+      <p>The Service is not directed at children under 13 (or the minimum age in your country). We do not knowingly collect their data. Contact us if you believe a child provided data and we will delete it.</p>
+
+      <h2 id="security"><span class="num">13</span>Security</h2>
+      <p>We apply data minimisation by design (collect nothing), TLS to your provider, and least-privilege permissions. No method is 100% secure — protect your device and credentials, and use a reputable mail provider.</p>
+
+      <h2 id="changes"><span class="num">14</span>Changes to this policy</h2>
+      <p>We may update this policy to reflect app or legal changes. Material changes will be announced via the app/store listing and the “Last updated” date above will be revised. Continued use after the effective date constitutes acceptance.</p>
+
+      <div class="contact-box" id="contact">
+        <strong>15 · Contact</strong>
+        <p style="margin:0.4rem 0 0; color:#D9E8F5;">Questions about this policy or your rights? Email <a href="mailto:privacy@numberinbox.com">privacy@numberinbox.com</a>. Please include “Privacy Request” in the subject.</p>
+      </div>
+    </div>
   </main>
+
+  <footer>
+    <div class="fmark">@</div>
+    <div class="fw"><span>Number</span><span>Inbox</span></div>
+    <div>Email, reimagined with your number. · Your number. Your inbox.</div>
+    <div style="margin-top:0.5rem;">© 2026 NumberInbox · <a href="mailto:privacy@numberinbox.com" style="color:#5EEAD4;">privacy@numberinbox.com</a></div>
+  </footer>
 </body>
 </html>

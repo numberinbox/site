@@ -1,73 +1,81 @@
-# Privacy Policy
+# Privacy Policy — NumberInbox
 
-## Preamble and scope
+**Tagline:** Email, reimagined with your number. — Your number. Your inbox.
+**Effective / Last updated:** September 22, 2026
+**Controller:** NumberInbox — privacy@numberinbox.com
 
-This privacy policy governs the user data processing executed by NumberInbox.
+> NumberInbox's business model is not based on your personal data. We do not sell, rent, or trade your data, show ads, or profile you. You are not the product.
 
-NumberInbox's business model is not based on your personal data. WE DO NOT SELL YOUR DATA, AND YOU ARE NOT THE PRODUCT.
+This policy covers the NumberInbox app and this static privacy site only.
 
-## Definitions
+## 1. Definitions
 
-The following expressions in the Privacy Policy have the meaning indicated in this section:
+- **Service**: NumberInbox, an email client where your phone number is your identity. Emails sent to +{country code}{phone number}@numberinbox.com are delivered to your inbox.
+- **Personal data**: any information relating to an identified or identifiable natural person.
+- **User Content**: content you create, upload, or send through the Service.
 
-**Content**: Any data, regardless of nature (information, image, video, audio, file, text, software, or any other element) which is available through the NumberInbox service.
+## 2. What we collect (and what we don't)
 
-**Personal data**: Any information relating to an identified or identifiable natural person.
+| Source | Data | Purpose |
+|---|---|---|
+| App use | No account, no analytics SDK, no personal data collected by us | Provide the client locally on your device |
+| Support contact | Name, email, message — only if you email us | Reply to your request only |
+| This website | No cookies, no analytics, no tracking currently | Display this policy statically |
 
-**Service**: NumberInbox, an email service where your phone number is your identity. Emails sent to +{country code}{phone number}@numberinbox.com are delivered to your inbox.
+Optional future website statistics would be consent-based only, withdrawable at any time.
 
-**User**: You as an individual, whether acting on your own account or on behalf of an organization.
+We never: sell data, show ads, profile you, read your mailbox, or upload contacts/photos/files except the single file you explicitly pick to attach (which goes to your mail server, not to us).
 
-**User Content**: Content which is directly or indirectly created by a User and uploaded to or broadcast through the Service.
+## 3. Your emails stay with your provider
 
-## Scope
+NumberInbox is a client for any email server. Messages, credentials, and mailboxes are stored by the email server owner you configure, under their privacy policy. Please review it. We are not responsible for providers you choose.
 
-The present privacy policy is limited to the NumberInbox application.
+## 4. Push notifications
 
-## Email server disclaimer
+If supported, new-mail signals may transit via Firebase Cloud Messaging (Google). No email content or personal data is sent to us — FCM carries a minimal wake-up signal, and the app fetches the message directly from your mail server.
 
-Users need to be aware that the email server and its owner may have a different privacy policy. NumberInbox being usable with any email server, we cannot assume the terms of the email server owner's privacy policy. Users are responsible for consulting and validating the privacy policy of their email server.
+## 5. App permissions (all optional)
 
-By no means can NumberInbox be held accountable for the actions of arbitrary email server owners that Users have been setting up with the NumberInbox application.
+- **Files, documents & audio**: attach a file you pick. Only chosen files are uploaded, to your mail server.
+- **Photos & videos**: attach media you pick. Same as above.
+- **Contacts**: on-device address auto-complete. Address book never leaves your device, except the single address you explicitly email (which your mail server then sees).
 
-## Acceptance
+Denying permissions only reduces functionality.
 
-By accessing and/or activating the functionalities of the Service, Users signify their understanding as well as their irrevocable and complete acceptance of the Privacy Policy applicable at the time of such Service use.
+## 6. Legal basis (GDPR Art. 6)
 
-The present Privacy Policy is applicable to any and all access and activation of the functionalities of the Service by Users.
+- Support replies: consent / legitimate interest.
+- App functionality: performance of the requested service; permissions on consent.
+- Optional site statistics (if ever enabled): consent.
 
-The present Privacy Policy may be amended or changed at any time without prior notice.
+## 7. Retention
 
-## Data processing operations
+We store essentially nothing. Support emails are kept only as long as needed to resolve your request, then deleted on request. Provider/FCM retention is governed by their policies.
 
-User is informed that none of their personal data are collected by NumberInbox.
+## 8. Sharing
 
-If supported by the email server, the fact that emails are received might transit through third party infrastructure (firebase cloud messaging). In the process, no personal data is being exposed, and the NumberInbox application needs to contact the mail server directly in order to gather the notification information.
+- Your chosen email provider (protocol-required delivery data).
+- Google (FCM) as processor for push, where applicable.
+- No advertisers, brokers, or analytics vendors. Disclosure only if legally required.
 
-## Application Permissions
+No international transfer is performed by us.
 
-In order to work smoothly on your device the NumberInbox application needs the following authorization:
+## 9. Your rights
 
-- **Files, documents, and audio files**: This permission is used by NumberInbox to access files on your device and allows using those files as email attachments. Once selected, files are uploaded to the remote email server.
-- **Photos and videos**: This permission is used by NumberInbox to access photos and videos and allows using those files as email attachments. Once selected, files are uploaded to the remote email server.
-- **Contacts**: Used by NumberInbox for email address auto-completion against your local address book. Local address books are never uploaded to third parties. Only once an email is sent to a local contact does the email server become aware of the email address and display name of the contact.
+Access, rectification, erasure, restriction, portability, objection, withdrawal of consent. Exercise via privacy@numberinbox.com (subject: "Privacy Request") — reply within 30 days. You may complain to your supervisory authority. Mailbox data must be requested from your provider.
 
-These permissions are only intended to improve the NumberInbox user experience. NumberInbox is still usable with a reduced functional scope if the user denies permissions.
+## 10. Children
 
-## Our guiding principles for privacy
+Not directed at children under 13 (or local minimum age). No knowing collection; contact us for deletion.
 
-Our personal data collection and processing comply with the GDPR principles and the following guidelines:
+## 11. Security
 
-- Gathering and processing of personal data is never an end in itself. It aims at achieving a legitimate and licit purpose, and is strictly proportionate and necessary to the achievement of said purpose.
+Data minimisation by design, TLS to your provider, least-privilege permissions. Protect your device/credentials and use a reputable provider.
 
-- We never keep collected data any longer than strictly necessary to achieve the purpose it was collected for.
+## 12. Changes
 
-- When entrusting third-party partner companies with the task of processing user personal data, we ensure such companies comply with a data privacy protection level at least equal to the level of protection provided to EU citizens.
+Material changes will be announced via the app/store listing with a revised date above. Continued use after the effective date constitutes acceptance.
 
-- In order for us to provide you with the best possible experience when using our Services, we may collect and process certain information. Depending on your use of the Services, this may include:
+## 13. Contact
 
-  A. **Your contact information** - when you request help, send us questions or comments, or report a problem, we will collect your name, email address, message, etc. We will only use this information to respond to your requests.
-
-  B. **Your statistical/cookie/behavioral data** - when you visit our site or use the Services, we may collect the URL of the website from which you visited us, the parts of our site you visit, the date and duration of your visit, your anonymous IP address, device information (device type, operating system, screen resolution, language, country you are in, type of web browser you used during your visit, etc.), and other information about your computer.
-
-Most of this statistical data is not necessary for providing you with the service and we will only collect it after having obtained your consent. You can withdraw your consent (or grant it again) at any time in your personal settings.
+Privacy questions or rights requests: privacy@numberinbox.com.
