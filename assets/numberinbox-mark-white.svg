@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">NumberInbox white mark</title>
+  <desc id="desc">A one-color white letter N with a navy at symbol.</desc>
+  <g fill="#FFFFFF">
+    <rect x="70" y="66" width="132" height="380" rx="66"/>
+    <rect x="310" y="66" width="132" height="380" rx="66"/>
+    <rect x="191" y="15" width="130" height="482" rx="65" transform="rotate(-45 256 256)"/>
+  </g>
+  <circle cx="256" cy="256" r="88" fill="#FFFFFF"/>
+  <g data-glyph="at" fill="none" stroke="#0F172A" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"><circle cx="256" cy="256" r="29"/><path d="M285 227v36a22 22 0 0 0 43 0v-7a72 72 0 1 0-29 58"/></g>
+</svg>
