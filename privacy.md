@@ -1,81 +1,35 @@
-# Privacy Policy — NumberInbox
+# NumberInbox Privacy Policy
 
-**Tagline:** Email, reimagined with your number. — Your number. Your inbox.
-**Effective / Last updated:** September 22, 2026
-**Controller:** NumberInbox — privacy@numberinbox.com
+**Last updated:** September 25, 2026
+**Contact:** privacy@numberinbox.com
 
-> NumberInbox's business model is not based on your personal data. We do not sell, rent, or trade your data, show ads, or profile you. You are not the product.
+NumberInbox is a hosted email service. Your phone number identifies a NumberInbox mailbox at `+{country code}{number}@numberinbox.com`. We do not sell personal data or use mailbox contents for advertising.
 
-This policy covers the NumberInbox app and this static privacy site only.
+## Data we handle
 
-## 1. Definitions
+- **Account and authentication:** your phone number, mailbox address, whether the mailbox has been claimed, app-specific mail credentials, and verification/SMS delivery information. A code sent to your number is used to sign in.
+- **Mail:** messages, attachments, sender and recipient addresses, subject lines, timestamps, mailbox folders, and delivery information. These are stored on our Stalwart mail service and its configured storage. Sending or receiving mail necessarily shares message data with the other mail providers involved.
+- **App and service operation:** device registration and push tokens if notifications are enabled, security and error logs, and crash diagnostics when enabled. A selected attachment is uploaded only when you choose to send it. Contacts are used for address suggestions if you grant permission; the app does not upload your whole address book to NumberInbox.
+- **Business senders and support:** sender addresses and delivery/billing records needed to operate the service, plus information you provide when contacting support or requesting deletion.
 
-- **Service**: NumberInbox, an email client where your phone number is your identity. Emails sent to +{country code}{phone number}@numberinbox.com are delivered to your inbox.
-- **Personal data**: any information relating to an identified or identifiable natural person.
-- **User Content**: content you create, upload, or send through the Service.
+We use this information to deliver and display mail, authenticate accounts, send verification or first-mail SMS when applicable, provide notifications, prevent abuse, answer support requests, and maintain the service. We do not sell it or use it to target ads.
 
-## 2. What we collect (and what we don't)
+## Service providers
 
-| Source | Data | Purpose |
-|---|---|---|
-| App use | No account, no analytics SDK, no personal data collected by us | Provide the client locally on your device |
-| Support contact | Name, email, message — only if you email us | Reply to your request only |
-| This website | No cookies, no analytics, no tracking currently | Display this policy statically |
+Depending on the feature and deployment, data may be handled by our hosting and object-storage providers, SMS providers (Plivo or Telnyx), Firebase Cloud Messaging for push delivery, and Sentry for diagnostics. We share only the data needed for those functions. Mail exchanged with external addresses is also processed by the sender's or recipient's mail provider. Provider processing may occur outside your country.
 
-Optional future website statistics would be consent-based only, withdrawable at any time.
+## Retention and deletion
 
-We never: sell data, show ads, profile you, read your mailbox, or upload contacts/photos/files except the single file you explicitly pick to attach (which goes to your mail server, not to us).
+Active account and mail data are kept while the mailbox exists. In the NumberInbox mobile app, open **Settings → Delete account**. The app asks you to re-enter the number on your signed-in mailbox; it does not send another SMS code for that step. Deletion removes the mailbox and its messages from active service storage, including the credentials used by the app. After completion, later mail to the same number may create a new, empty, unclaimed mailbox; old messages are not restored to it.
 
-## 3. Your emails stay with your provider
+If you no longer have the app, use the [account deletion request page](/delete-account). We verify control of the account before acting on a website request. A phone number entered on a public page is not enough to authorize deletion. We will tell you when deletion is complete or if follow-up is needed.
 
-NumberInbox is a client for any email server. Messages, credentials, and mailboxes are stored by the email server owner you configure, under their privacy policy. Please review it. We are not responsible for providers you choose.
+Backup copies are not removed immediately when an account is deleted. They expire under our operational backup schedule; contact privacy@numberinbox.com for the current retention period. Independent business-sender records are not automatically removed when a recipient deletes a mailbox; requests concerning those records can be sent to us separately. We retain limited records where required for legal, security, or fraud-prevention purposes and explain any exception when responding to a request.
 
-## 4. Push notifications
+## Your choices and rights
 
-If supported, new-mail signals may transit via Firebase Cloud Messaging (Google). No email content or personal data is sent to us — FCM carries a minimal wake-up signal, and the app fetches the message directly from your mail server.
+You may request access, correction, or deletion of your personal data and ask questions about processing by writing to privacy@numberinbox.com. You can turn off optional notifications or permissions in your device settings. Deleting the app alone does not delete the hosted mailbox.
 
-## 5. App permissions (all optional)
+## Security and updates
 
-- **Files, documents & audio**: attach a file you pick. Only chosen files are uploaded, to your mail server.
-- **Photos & videos**: attach media you pick. Same as above.
-- **Contacts**: on-device address auto-complete. Address book never leaves your device, except the single address you explicitly email (which your mail server then sees).
-
-Denying permissions only reduces functionality.
-
-## 6. Legal basis (GDPR Art. 6)
-
-- Support replies: consent / legitimate interest.
-- App functionality: performance of the requested service; permissions on consent.
-- Optional site statistics (if ever enabled): consent.
-
-## 7. Retention
-
-We store essentially nothing. Support emails are kept only as long as needed to resolve your request, then deleted on request. Provider/FCM retention is governed by their policies.
-
-## 8. Sharing
-
-- Your chosen email provider (protocol-required delivery data).
-- Google (FCM) as processor for push, where applicable.
-- No advertisers, brokers, or analytics vendors. Disclosure only if legally required.
-
-No international transfer is performed by us.
-
-## 9. Your rights
-
-Access, rectification, erasure, restriction, portability, objection, withdrawal of consent. Exercise via privacy@numberinbox.com (subject: "Privacy Request") — reply within 30 days. You may complain to your supervisory authority. Mailbox data must be requested from your provider.
-
-## 10. Children
-
-Not directed at children under 13 (or local minimum age). No knowing collection; contact us for deletion.
-
-## 11. Security
-
-Data minimisation by design, TLS to your provider, least-privilege permissions. Protect your device/credentials and use a reputable provider.
-
-## 12. Changes
-
-Material changes will be announced via the app/store listing with a revised date above. Continued use after the effective date constitutes acceptance.
-
-## 13. Contact
-
-Privacy questions or rights requests: privacy@numberinbox.com.
+We use encrypted network connections and restrict operational access to service data. No internet service can promise absolute security. If this policy changes materially, we will update the date above and make the revised policy available here.

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Delete your NumberInbox account</title>
+  <meta name="description" content="Request deletion of your NumberInbox mailbox and account data.">
+  <style>
+    :root { color-scheme: light; --navy:#0F172A; --green:#10B981; --cyan:#06B6D4; --gray:#E5E7EB; --ice:#F5F7EB; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--ice); color:var(--navy); font:16px/1.6 Inter,system-ui,-apple-system,sans-serif; }
+    header,main,footer { max-width:760px; margin:auto; padding:24px; }
+    header { display:flex; align-items:center; justify-content:space-between; }
+    a { color:#087f91; }
+    .brand { font-size:22px; font-weight:800; text-decoration:none; color:var(--navy); }
+    .brand span { color:#0085b8; }
+    main { background:white; border:1px solid var(--gray); border-radius:20px; padding:40px; margin-top:32px; }
+    h1 { font-size:clamp(28px,5vw,42px); line-height:1.15; margin:0 0 16px; }
+    h2 { margin-top:30px; font-size:20px; }
+    .button { display:inline-block; padding:14px 20px; border-radius:12px; background:linear-gradient(100deg,var(--green),var(--cyan)); color:var(--navy); font-weight:700; text-decoration:none; }
+    .note { background:var(--ice); border-left:4px solid var(--green); padding:12px 16px; border-radius:8px; }
+    label { display:block; font-weight:600; margin:16px 0 6px; }
+    input { width:100%; max-width:420px; padding:12px; border:1px solid var(--gray); border-radius:10px; font:inherit; }
+    button { border:0; cursor:pointer; font:inherit; }
+    footer { font-size:14px; color:#475569; }
+    @media(max-width:640px) { main { margin:12px; padding:24px; } }
+  </style>
+</head>
+<body>
+  <header><a class="brand" href="/privacy">Number<span>Inbox</span></a><a href="/privacy">Privacy policy</a></header>
+  <main>
+    <h1>Delete your NumberInbox account</h1>
+    <p>This page is for people who no longer have access to the NumberInbox app. You can request deletion of your hosted mailbox and its messages without reinstalling the app.</p>
+    <h2>If you still have the app</h2>
+    <p>Open <strong>Settings → Delete account</strong>. Re-enter the number linked to your signed-in mailbox and confirm. No extra SMS code is sent for that in-app step.</p>
+    <h2>If you no longer have the app</h2>
+    <p>Email our privacy team with the subject <strong>NumberInbox account deletion request</strong>. Tell us the phone number linked to the mailbox in international format, such as <code>+66812345678</code>. Do not send passwords, verification codes, or message contents. We will reply with a safe way to verify account control before deletion.</p>
+    <form id="deletion-request">
+      <label for="phone">Number on the mailbox</label>
+      <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+66812345678" required>
+      <label for="reply">Reply email address</label>
+      <input id="reply" name="reply" type="email" autocomplete="email" placeholder="you@example.com" required>
+      <p><button class="button" type="submit">Prepare email request</button></p>
+    </form>
+    <p>Submitting opens your email app with a draft for our privacy team. Send the draft to complete your request. If your email app does not open, write to <a href="mailto:privacy@numberinbox.com">privacy@numberinbox.com</a>.</p>
+    <h2>What happens next</h2>
+    <p>After verification, we delete the mailbox, messages, and associated app credentials from active service storage. We confirm when the request is complete. Backup copies are not removed immediately and expire under our operational backup schedule. Contact us for the current retention period. A later message sent to the same number may create a new, empty mailbox; deleted messages do not return.</p>
+    <p class="note">Entering somebody else's phone number does not delete their account. We verify account control before processing a request.</p>
+  </main>
+  <footer>NumberInbox · <a href="/privacy">Privacy policy</a></footer>
+  <script>
+    document.getElementById('deletion-request').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const phone = document.getElementById('phone').value.trim();
+      const reply = document.getElementById('reply').value.trim();
+      const subject = encodeURIComponent('NumberInbox account deletion request');
+      const body = encodeURIComponent('Mailbox number: ' + phone + '\nReply email: ' + reply + '\n\nPlease tell me how to verify account control.');
+      window.location.href = 'mailto:privacy@numberinbox.com?subject=' + subject + '&body=' + body;
+    });
+  </script>
+</body>
+</html>
