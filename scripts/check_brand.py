@@ -87,6 +87,12 @@ ASSET_REFS = [
     "/assets/numberinbox-mark-white.svg",
 ]
 
+EXPECTED_ARTWORK = {
+    "assets/numberinbox-logo.svg": "assets/brand/source/logo-horizontal.svg",
+    "assets/numberinbox-mark.svg": "assets/brand/source/mark-full-color.svg",
+    "assets/numberinbox-mark-white.svg": "assets/brand/source/mark-monochrome-white.svg",
+}
+
 FONT_PRELOAD_HREF = "/assets/fonts/InterVariable.woff2"
 STYLESHEET_HREF = "/styles.css"
 THEME_COLOR = "#0F172A"
@@ -105,11 +111,6 @@ def strip_css_comments(css: str) -> str:
     return re.sub(r"/\*.*?\*/", "", css, flags=re.S)
 
 
-def extract_root_block(css: str) -> str:
-    match = re.search(r":root\s*\{(.*?)\}", css, flags=re.S)
-    return match.group(1) if match else ""
-
-
 def parse_custom_properties(block: str) -> dict[str, list[str]]:
     props: dict[str, list[str]] = {}
     for match in re.finditer(r"(--[\w-]+)\s*:\s*([^;]+);", block):
@@ -123,7 +124,8 @@ def resolve_alias(name: str, props: dict[str, list[str]], seen: tuple[str, ...])
     values = props.get(name)
     if not values:
         return None
-    ref = re.search(r"var\(\s*(--[\w-]+)\s*\)", values[0])
+    # Cascade order: the last declaration wins.
+    ref = re.search(r"var\(\s*(--[\w-]+)\s*\)", values[-1])
     if not ref:
         return None
     target = ref.group(1)
@@ -184,26 +186,32 @@ def main() -> int:
         return 1
     css_raw = css_path.read_text(encoding="utf-8")
     css = strip_css_comments(css_raw)
-    root_block = extract_root_block(css)
-    if not root_block:
+    root_blocks = re.findall(r":root\s*\{(.*?)\}", css, flags=re.S)
+    if not root_blocks:
         fail("styles.css has no :root block", failures)
         print(f"{len(failures)} failing check(s)")
         return 1
-    props = parse_custom_properties(root_block)
+    # Merge declarations in cascade order (later blocks win) so appended
+    # overrides are visible to every check below.
+    props: dict[str, list[str]] = {}
+    for block in root_blocks:
+        for prop_name, prop_values in parse_custom_properties(block).items():
+            props.setdefault(prop_name, []).extend(prop_values)
 
     for name, expected in REQUIRED_PRIMITIVES.items():
-        occurrences = len(re.findall(rf"{re.escape(name)}\s*:", root_block))
+        occurrences = len(re.findall(rf"{re.escape(name)}\s*:", css))
         actual_values = props.get(name, [])
         if occurrences != 1:
             fail(f"styles.css token {name} declared {occurrences}x, expected exactly once", failures)
-        elif actual_values[0].strip().upper() != expected.upper():
-            fail(f"styles.css token {name} is {actual_values[0].strip()}, expected {expected}", failures)
+        elif actual_values[-1].strip().upper() != expected.upper():
+            fail(f"styles.css token {name} is {actual_values[-1].strip()}, expected {expected}", failures)
         else:
             ok(f"styles.css token {name} = {expected}")
 
     for alias, expected_target in REQUIRED_ALIASES.items():
-        if alias not in props:
-            fail(f"styles.css alias {alias} is missing", failures)
+        occurrences = len(re.findall(rf"{re.escape(alias)}\s*:", css))
+        if occurrences != 1:
+            fail(f"styles.css alias {alias} declared {occurrences}x, expected exactly once", failures)
             continue
         resolved = resolve_alias(alias, props, ())
         if resolved != expected_target:
@@ -211,7 +219,9 @@ def main() -> int:
         else:
             ok(f"styles.css alias {alias} -> {expected_target}")
 
-    outside_root = css.replace(root_block, "", 1)
+    outside_root = css
+    for block in root_blocks:
+        outside_root = outside_root.replace(block, "", 1)
     # URLs are not color declarations; strip url(...) before scanning.
     outside_scannable = re.sub(r"url\([^)]*\)", "url()", outside_root)
     color_literal = re.search(
@@ -280,6 +290,31 @@ def main() -> int:
                 fail("assets/brand-manifest.json schemaVersion is not 1", failures)
             else:
                 ok("brand manifest schemaVersion = 1")
+            declared_artwork = {
+                str(entry.get("path", "")): str(entry.get("source", ""))
+                for entry in manifest.get("artwork", [])
+                if isinstance(entry, dict)
+            }
+            if declared_artwork != EXPECTED_ARTWORK:
+                missing = sorted(set(EXPECTED_ARTWORK) - set(declared_artwork))
+                extra = sorted(set(declared_artwork) - set(EXPECTED_ARTWORK))
+                mismapped = sorted(
+                    path
+                    for path in set(declared_artwork) & set(EXPECTED_ARTWORK)
+                    if declared_artwork[path] != EXPECTED_ARTWORK[path]
+                )
+                detail = "; ".join(
+                    part
+                    for part in [
+                        f"missing: {', '.join(missing)}" if missing else "",
+                        f"unexpected: {', '.join(extra)}" if extra else "",
+                        f"wrong source: {', '.join(mismapped)}" if mismapped else "",
+                    ]
+                    if part
+                )
+                fail(f"brand manifest must list exactly the approved artwork ({detail})", failures)
+            else:
+                ok("brand manifest lists all approved artwork")
             for entry in manifest.get("artwork", []):
                 rel = Path(entry.get("path", ""))
                 target = (site / rel).resolve()
