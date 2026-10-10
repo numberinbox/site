@@ -5,17 +5,20 @@ from __future__ import annotations
 
 import argparse
 import sys
-from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
 
 SITE_ROOT = Path(__file__).resolve().parents[1]
 
-REWRITES = {
-    "/privacy": "/index.html",
-    "/delete-account": "/delete-account.html",
-}
+def load_rewrites() -> dict[str, str]:
+    """Read the exact 200 proxies supported by this site's _redirects file."""
+    rewrites = {}
+    for line in (SITE_ROOT / "_redirects").read_text(encoding="utf-8").splitlines():
+        parts = line.split()
+        if len(parts) == 3 and parts[2] == "200" and not line.lstrip().startswith("#"):
+            rewrites.setdefault(parts[0], parts[1])
+    return rewrites
 
 
 class PreviewHandler(SimpleHTTPRequestHandler):
@@ -25,11 +28,35 @@ class PreviewHandler(SimpleHTTPRequestHandler):
     def log_message(self, fmt, *args):  # keep quiet, never log bodies
         sys.stderr.write("preview: " + (fmt % args) + "\n")
 
+    def route_request(self):
+        request = urlsplit(self.path)
+        path = load_rewrites().get(request.path, request.path)
+        # Match Pages' .html canonicalization before serving a proxy target.
+        # An incorrect /page -> /page.html proxy will now reproduce the loop.
+        if path.endswith(".html") and Path(self.translate_path(path)).is_file():
+            canonical = path[:-5]
+            if canonical.endswith("/index"):
+                canonical = canonical[:-5]
+            if request.query:
+                canonical += "?" + request.query
+            self.send_response(307)
+            self.send_header("Location", canonical)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return False
+        candidate = Path(self.translate_path(path + ".html"))
+        if candidate.is_file():
+            path += ".html"
+        self.path = path + ("?" + request.query if request.query else "")
+        return True
+
     def do_GET(self):
-        path = urlsplit(self.path).path
-        if path in REWRITES:
-            self.path = REWRITES[path]
-        return super().do_GET()
+        if self.route_request():
+            return super().do_GET()
+
+    def do_HEAD(self):
+        if self.route_request():
+            return super().do_HEAD()
 
     def do_POST(self):
         self.send_error(404)
@@ -41,7 +68,7 @@ def main() -> int:
     args = parser.parse_args()
     try:
         server = ThreadingHTTPServer(
-            ("127.0.0.1", args.port), partial(PreviewHandler)
+            ("127.0.0.1", args.port), PreviewHandler
         )
     except OSError as exc:
         print(f"preview: cannot bind 127.0.0.1:{args.port}: {exc}", file=sys.stderr)
@@ -51,6 +78,8 @@ def main() -> int:
         server.serve_forever()
     except KeyboardInterrupt:
         pass
+    finally:
+        server.server_close()
     return 0
 
 

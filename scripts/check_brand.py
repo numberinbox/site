@@ -78,7 +78,6 @@ CONTRAST_CHECKS = [
 
 EXPECTED_REDIRECTS = {
     "/privacy / 200",
-    "/delete-account /delete-account.html 200",
 }
 
 ASSET_REFS = [
@@ -369,12 +368,22 @@ def main() -> int:
         lines = {
             line.strip()
             for line in redirects_path.read_text(encoding="utf-8").splitlines()
-            if line.strip()
+            if line.strip() and not line.lstrip().startswith("#")
         }
         if not EXPECTED_REDIRECTS.issubset(lines):
             fail("_redirects is missing a required route mapping", failures)
         else:
-            ok("_redirects retains both route mappings")
+            ok("_redirects retains the privacy rewrite")
+        for line in lines:
+            parts = line.split()
+            if len(parts) == 3 and parts[2] == "200":
+                source, target, _ = parts
+                # Pages redirects .html targets back to their clean URL.
+                # Proxying that clean URL to .html creates a self-redirect.
+                if target.endswith(".html") and source == target[:-5]:
+                    fail(f"_redirects creates a Cloudflare clean-URL loop: {line}", failures)
+        if not (site / "delete-account.html").is_file():
+            fail("delete-account.html is missing for the native clean-URL route", failures)
 
     # Sibling-source checks.
     platform_guide = platform_root / "docs" / "16-branding.md"

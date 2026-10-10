@@ -5,7 +5,7 @@ Static privacy policy and web presence. No build step, no external font service.
 ## Pages and routes
 
 - `/privacy` → `index.html` (privacy policy; production rewrite in `_redirects`).
-- `/delete-account` → `delete-account.html` (deletion guidance plus a form that prepares a `mailto:` draft; sending stays user-controlled).
+- `/delete-account` → `delete-account.html` through Cloudflare Pages' native clean-URL handling (deletion guidance plus a form that prepares a `mailto:` draft; sending stays user-controlled).
 - Shared styling: `styles.css`. Brand artwork: `assets/numberinbox-*.svg`.
 
 ## Canonical sources
@@ -29,14 +29,21 @@ Static privacy policy and web presence. No build step, no external font service.
 python3 scripts/preview.py --port 8000
 python3 scripts/check_brand.py
 python3 scripts/check_brand.py --require-sources
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s scripts -p 'test_*.py'
 python3 scripts/check_brand.py \
   --platform-root /absolute/path/platform \
   --mobile-root /absolute/path/mobile-app \
   --require-sources
 ```
 
-Preview binds only `127.0.0.1`, maps `/privacy` and `/delete-account` locally,
-and serves everything else statically. Production uses `_redirects`.
+Preview binds only `127.0.0.1`, reads exact 200 proxies from `_redirects`,
+and mirrors Pages' `.html` canonicalization and extensionless HTML serving
+for GET and HEAD requests. This exposes clean-URL self-redirects locally.
+
+Keep only the `/privacy / 200` proxy. Do not add
+`/delete-account /delete-account.html 200`: Pages redirects `.html` back to
+the extensionless URL, causing a loop. `/delete-account` works natively.
+See [Cloudflare Pages route matching](https://developers.cloudflare.com/pages/configuration/serving-pages/#route-matching).
 
 ## Fonts and provenance
 
