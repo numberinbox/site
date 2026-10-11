@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import re
 import sys
+from html.parser import HTMLParser
 from pathlib import Path
 
 SITE_ROOT = Path(__file__).resolve().parents[1]
@@ -92,6 +93,20 @@ EXPECTED_ARTWORK = {
     "assets/numberinbox-mark-white.svg": "assets/brand/source/mark-monochrome-white.svg",
 }
 
+EXPECTED_MESSAGES = {
+    "primary_tagline": "Email, reimagined with your number.",
+    "secondary_tagline": "Your number. Your inbox.",
+    "explanatory_message": "Your number is your inbox.",
+    "campaign_headline": "One number. Endless connections.",
+}
+
+MESSAGE_TABLE_START = "<!-- numberinbox-brand-messages:start -->"
+MESSAGE_TABLE_END = "<!-- numberinbox-brand-messages:end -->"
+
+WELCOME_VIEW = Path(
+    "lib/features/starting_page/presentation/twake_welcome/twake_welcome_view.dart"
+)
+
 FONT_PRELOAD_HREF = "/assets/fonts/InterVariable.woff2"
 STYLESHEET_HREF = "/styles.css"
 THEME_COLOR = "#0F172A"
@@ -163,6 +178,71 @@ def contrast_ratio(fg: str, bg: str) -> float:
 
 def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def normalize_text(text: str) -> str:
+    """Collapse whitespace for comparison; case and punctuation are significant."""
+    return " ".join(text.split())
+
+
+def parse_message_table(guide_text: str) -> tuple[dict[str, str], list[str]]:
+    """Return (key -> exact text, duplicate keys) from the marked guide table."""
+    start = guide_text.find(MESSAGE_TABLE_START)
+    end = guide_text.find(MESSAGE_TABLE_END)
+    if start < 0 or end < 0 or end < start:
+        return {}, []
+    messages: dict[str, str] = {}
+    duplicates: list[str] = []
+    for row in guide_text[start:end].splitlines():
+        cells = [cell.strip().strip("`") for cell in row.strip().strip("|").split("|")]
+        if len(cells) != 3 or not cells[0] or cells[0].lower() == "key":
+            continue
+        if cells[0] in messages:
+            duplicates.append(cells[0])
+        messages[cells[0]] = cells[1]
+    return messages, duplicates
+
+
+class _FooterParagraphs(HTMLParser):
+    """Collect visible <p> texts inside <footer>; comments are ignored."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self._footer_depth = 0
+        self._paragraph_depth = 0
+        self._current: list[str] = []
+        self.paragraphs: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag == "footer":
+            self._footer_depth += 1
+        elif tag == "p" and self._footer_depth:
+            self._paragraph_depth += 1
+            if self._paragraph_depth == 1:
+                self._current = []
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "footer" and self._footer_depth:
+            self._footer_depth -= 1
+        elif tag == "p" and self._paragraph_depth:
+            self._paragraph_depth -= 1
+            if self._paragraph_depth == 0:
+                self.paragraphs.append("".join(self._current))
+
+    def handle_data(self, data: str) -> None:
+        if self._footer_depth and self._paragraph_depth:
+            self._current.append(data)
+
+
+def footer_paragraphs(html: str) -> list[str]:
+    parser = _FooterParagraphs()
+    parser.feed(html)
+    return parser.paragraphs
+
+
+def strip_dart_comments(source: str) -> str:
+    source = re.sub(r"/\*.*?\*/", "", source, flags=re.S)
+    return re.sub(r"//[^\n]*", "", source)
 
 
 def main() -> int:
@@ -385,6 +465,20 @@ def main() -> int:
         if not (site / "delete-account.html").is_file():
             fail("delete-account.html is missing for the native clean-URL route", failures)
 
+    expected_primary = normalize_text(EXPECTED_MESSAGES["primary_tagline"])
+    for page_name in ("index.html", "delete-account.html"):
+        page = site / page_name
+        if not page.is_file():
+            continue
+        visible = [
+            normalize_text(paragraph)
+            for paragraph in footer_paragraphs(page.read_text(encoding="utf-8"))
+        ]
+        if any(expected_primary in paragraph for paragraph in visible):
+            ok(f"{page_name} footer shows the primary tagline")
+        else:
+            fail(f"{page_name} footer is missing the primary tagline (primary_tagline)", failures)
+
     # Sibling-source checks.
     platform_guide = platform_root / "docs" / "16-branding.md"
     mobile_palette = (
@@ -440,6 +534,21 @@ def main() -> int:
             else:
                 ok("platform guide tokens match website CSS")
 
+            guide_messages, duplicate_keys = parse_message_table(guide_text)
+            for key in duplicate_keys:
+                fail(f"guide message key is duplicated: {key}", failures)
+            for key, expected in EXPECTED_MESSAGES.items():
+                actual = guide_messages.get(key)
+                if actual is None:
+                    fail(f"guide message key is missing: {key}", failures)
+                elif normalize_text(actual) != normalize_text(expected):
+                    fail(f"guide message text changed: {key}", failures)
+            if not duplicate_keys and all(
+                normalize_text(guide_messages.get(key, "")) == normalize_text(expected)
+                for key, expected in EXPECTED_MESSAGES.items()
+            ):
+                ok("platform guide messages match approved copy")
+
         dart = mobile_palette.read_text(encoding="utf-8")
         dart_values: dict[str, str] = {}
         for match in re.finditer(
@@ -468,6 +577,17 @@ def main() -> int:
                 fail(f"site artwork differs from mobile master: {local.name}", failures)
             else:
                 ok(f"site artwork matches mobile master: {local.name}")
+
+        welcome_path = mobile_root / WELCOME_VIEW
+        if not welcome_path.is_file():
+            fail(f"mobile welcome view is missing: {WELCOME_VIEW}", failures)
+        else:
+            welcome_text = normalize_text(strip_dart_comments(welcome_path.read_text(encoding="utf-8")))
+            for key in ("primary_tagline", "secondary_tagline"):
+                if normalize_text(EXPECTED_MESSAGES[key]) in welcome_text:
+                    ok(f"mobile welcome view contains {key}")
+                else:
+                    fail(f"mobile welcome view is missing {key}", failures)
 
     if failures:
         print(f"{len(failures)} failing check(s)")

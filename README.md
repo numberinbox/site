@@ -15,6 +15,23 @@ Static privacy policy and web presence. No build step, no external font service.
 - Editable master artwork: `mobile-app/assets/brand/source/`
   (`logo-horizontal.svg`, `mark-full-color.svg`, `mark-monochrome-white.svg`).
 
+## Brand messages
+
+Roles are defined in the platform guide (`docs/16-branding.md`, marked message table):
+
+- Primary tagline `Email, reimagined with your number.` — default placement: both website footers and the privacy hero introduction.
+- Secondary tagline `Your number. Your inbox.` — compact login/onboarding slogan; not required on the operational pages.
+- Explanatory message `Your number is your inbox.` — describes how the product works; distinct from the secondary tagline.
+- Campaign headline `One number. Endless connections.` — registered for future marketing; not used on the current pages.
+
+Page headlines (`Your inbox. Your information.`, `Leave on your own terms.`) are task-specific and stay unchanged.
+
+## Colors and controls
+
+Emerald and cyan are decorative accents (logo, hero glow, callout borders). Interactive controls intentionally use darker solid colors for readability: action green `#047857` for white-text buttons, action blue `#0369A1` for links and light-surface focus. The reference board's bright gradient buttons are presentation examples; the website keeps solid action colors to hold contrast.
+
+Color/artwork synchronization (matching tokens and byte-identical SVGs) is verified automatically; it is not a claim of exact visual identity with the raster reference board — see the comparison notes under `docs/plans/2026-10-11-brand-reference-alignment.md`.
+
 ## Palette and artwork updates
 
 1. Change the canonical guide and mobile palette together; site CSS follows them.
