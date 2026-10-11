@@ -93,6 +93,12 @@ EXPECTED_ARTWORK = {
     "assets/numberinbox-mark-white.svg": "assets/brand/source/mark-monochrome-white.svg",
 }
 
+# Derived raster icons (rendered from the approved mark, not mobile masters).
+EXPECTED_ICONS = {
+    "assets/favicon.png": (32, 32),
+    "assets/apple-touch-icon.png": (180, 180),
+}
+
 EXPECTED_MESSAGES = {
     "primary_tagline": "Email, reimagined with your number.",
     "secondary_tagline": "Your number. Your inbox.",
@@ -178,6 +184,18 @@ def contrast_ratio(fg: str, bg: str) -> float:
 
 def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def png_dimensions(path: Path) -> tuple[int, int] | None:
+    """Return (width, height) for a PNG, or None if the signature is invalid."""
+    import struct
+
+    with open(path, "rb") as handle:
+        header = handle.read(26)
+    if len(header) < 26 or header[:8] != b"\x89PNG\r\n\x1a\n":
+        return None
+    width, height = struct.unpack(">II", header[16:24])
+    return (width, height)
 
 
 def normalize_text(text: str) -> str:
@@ -431,6 +449,28 @@ def main() -> int:
                     fail("manifest font license hash mismatch", failures)
                 else:
                     ok("manifest font license verified")
+
+    for icon_rel, expected_size in EXPECTED_ICONS.items():
+        icon_path = site / icon_rel
+        if not icon_path.is_file():
+            fail(f"brand icon is missing: {icon_rel}", failures)
+            continue
+        actual_size = png_dimensions(icon_path)
+        if actual_size != expected_size:
+            fail(f"brand icon has wrong size: {icon_rel} is {actual_size}, expected {expected_size}", failures)
+        else:
+            ok(f"brand icon verified: {icon_rel} {expected_size[0]}x{expected_size[1]}")
+
+    for page_name in ("index.html", "delete-account.html"):
+        page = site / page_name
+        if not page.is_file():
+            continue
+        html = page.read_text(encoding="utf-8")
+        missing_icons = [rel for rel in EXPECTED_ICONS if f"/{rel}" not in html]
+        if missing_icons:
+            fail(f"{page_name} is missing icon refs: {', '.join(missing_icons)}", failures)
+        else:
+            ok(f"{page_name} references brand icons")
 
     for fg_token, bg_token, minimum, label in CONTRAST_CHECKS:
         fg = REQUIRED_PRIMITIVES[fg_token]
