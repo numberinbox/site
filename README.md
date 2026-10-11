@@ -7,9 +7,10 @@ Static privacy policy and web presence. No build step, no external font service.
 - `/privacy` → `index.html` (privacy policy; production rewrite in `_redirects`).
 - `/delete-account` → `delete-account.html` through Cloudflare Pages' native clean-URL handling (deletion guidance plus a form that prepares a `mailto:` draft; sending stays user-controlled).
 - Shared styling: `styles.css`. Brand artwork: `assets/numberinbox-*.svg`.
-- Browser icons: `assets/favicon.png` (32×32) and `assets/apple-touch-icon.png`
-  (180×180, mark on navy), rendered from the approved mark with rsvg-convert
-  plus Pillow. Regenerate from the SVG master if the mark ever changes.
+- Browser icons: `favicon.ico` (16+32, requested by default), `assets/favicon.png`
+  (32×32) and `assets/apple-touch-icon.png` (180×180, mark on navy), rendered
+  from the approved mark with rsvg-convert plus Pillow. Regenerate from the
+  SVG master if the mark ever changes.
 
 ## Canonical sources
 

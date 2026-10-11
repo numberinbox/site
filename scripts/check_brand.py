@@ -94,7 +94,9 @@ EXPECTED_ARTWORK = {
 }
 
 # Derived raster icons (rendered from the approved mark, not mobile masters).
+# Values are (width, height) for PNG, or a set of required sizes for ICO.
 EXPECTED_ICONS = {
+    "favicon.ico": {16, 32},
     "assets/favicon.png": (32, 32),
     "assets/apple-touch-icon.png": (180, 180),
 }
@@ -196,6 +198,23 @@ def png_dimensions(path: Path) -> tuple[int, int] | None:
         return None
     width, height = struct.unpack(">II", header[16:24])
     return (width, height)
+
+
+def ico_sizes(path: Path) -> set[int] | None:
+    """Return the square image sizes in an ICO file, or None if invalid."""
+    import struct
+
+    data = path.read_bytes()
+    if len(data) < 6:
+        return None
+    _reserved, kind, count = struct.unpack("<HHH", data[:6])
+    if kind != 1 or count == 0 or len(data) < 6 + 16 * count:
+        return None
+    sizes = set()
+    for index in range(count):
+        entry = data[6 + 16 * index: 22 + 16 * index]
+        sizes.add(entry[0] or 256)
+    return sizes
 
 
 def normalize_text(text: str) -> str:
@@ -450,16 +469,24 @@ def main() -> int:
                 else:
                     ok("manifest font license verified")
 
-    for icon_rel, expected_size in EXPECTED_ICONS.items():
+    for icon_rel, expected in EXPECTED_ICONS.items():
         icon_path = site / icon_rel
         if not icon_path.is_file():
             fail(f"brand icon is missing: {icon_rel}", failures)
             continue
-        actual_size = png_dimensions(icon_path)
-        if actual_size != expected_size:
-            fail(f"brand icon has wrong size: {icon_rel} is {actual_size}, expected {expected_size}", failures)
+        if icon_rel.endswith(".ico"):
+            sizes = ico_sizes(icon_path)
+            actual = {(side, side) for side in sizes} if sizes else None
+            wanted = {(side, side) for side in expected}
+            label = f"sizes {sorted(expected)}"
         else:
-            ok(f"brand icon verified: {icon_rel} {expected_size[0]}x{expected_size[1]}")
+            actual = {png_dimensions(icon_path)} if png_dimensions(icon_path) else None
+            wanted = {expected}
+            label = f"{expected[0]}x{expected[1]}"
+        if actual != wanted:
+            fail(f"brand icon has wrong size: {icon_rel} is {actual}, expected {label}", failures)
+        else:
+            ok(f"brand icon verified: {icon_rel} {label}")
 
     for page_name in ("index.html", "delete-account.html"):
         page = site / page_name

@@ -70,6 +70,9 @@ class RoutingTests(unittest.TestCase):
         status, _, body = self.request("/assets/fonts/InterVariable.woff2")
         self.assertEqual(status, 200)
         self.assertEqual(body[:4], b"wOF2")
+        status, _, body = self.request("/favicon.ico")
+        self.assertEqual(status, 200)
+        self.assertEqual(body[:4], b"\x00\x00\x01\x00")
         for path in ["/no-such-page", "/no-such-page.html"]:
             with self.subTest(path=path):
                 self.assertEqual(self.request(path)[0], 404)
