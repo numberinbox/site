@@ -34,7 +34,7 @@ Page headlines (`Your inbox. Your information.`, `Leave on your own terms.`) are
 
 Emerald and cyan are decorative accents (logo, hero glow, callout borders). Interactive controls intentionally use darker solid colors for readability: action green `#047857` for white-text buttons, action blue `#0369A1` for links and light-surface focus. The reference board's bright gradient buttons are presentation examples; the website keeps solid action colors to hold contrast.
 
-Color/artwork synchronization (matching tokens and byte-identical SVGs) is verified automatically; it is not a claim of exact visual identity with the raster reference board — see the comparison notes under `docs/plans/2026-10-11-brand-reference-alignment.md`.
+Color/artwork synchronization (matching tokens and byte-identical SVGs) is verified automatically; it is not a claim of exact visual identity with the raster reference board — see `docs/brand-reference-comparison.md`.
 
 ## Palette and artwork updates
 

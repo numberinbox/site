@@ -2,7 +2,7 @@
 """NumberInbox brand checker (stdlib only).
 
 Local checks always run; sibling platform/mobile sources are compared when
-available. See docs/plans/2026-10-10-brand-standardization.md section 6.
+available. Token and route rules mirror platform docs/16-branding.md.
 """
 
 from __future__ import annotations
